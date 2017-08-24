@@ -1,4 +1,7 @@
 
+from grid_algorithm import WorldGrid
+
+__author__ = 'keyz'
 BOOTSTRAP_USE_CDN = True
 BOOTSTRAP_USE_MINIFIED = True
 BOOTSTRAP_FONTAWESOME = True
@@ -7,6 +10,7 @@ ENABLED_VIEWS = [
     'app.blueprints.home',
     'app.blueprints.auth',
     'app.blueprints.events',
+    'app.blueprints.incident'
 #    'app.blueprints.querybuilder',
 #    'app.blueprints.overviewer',
 ]

@@ -20,9 +20,12 @@ class SignUpView(MethodView):
                             blood_type=form.blood_type.data,
                             username=form.fullname.data,
                             uuid=form.uuid.data,
-                            can_help=form.can_help.data)
-                db.session.add(user)
-                db.session.commit()
+                            can_help=form.can_help.data).save()
+                client = FlaskAPNS()
+                client.init_app(app)
+                with app.app_context():
+                    client.send(user.uuid, "help! there is an emergency", title="emergency alert",
+                                extra={'to_rescue': user.to_json(), 'incident_id': "455454"})
                 if login_user(user, remember=True):
                     session.permanent = True
             except Exception as e:

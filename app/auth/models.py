@@ -56,12 +56,13 @@ class User(UserMixin, db.Model):
             'username': self.username,
             'can_help': self.can_help,
             'can_help_medical': self.can_help_medical,
-            'active': self.active,
-            'incidents_in_need': self.incidents_in_need,
-            'incidents_helped': self.incidents_helped,
             'longitude': WORLD_GRID.world[i][j][self.id]['longitude'],
             'latitude': WORLD_GRID.world[i][j][self.id]['latitude']
         }
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+        return self
 
 
 class Incident(db.Model):
@@ -74,6 +75,7 @@ class Incident(db.Model):
     in_need_id = db.Column(db.Integer, ForeignKey('user.id'))
     helpers = relationship('User', secondary=association_table)
     status = db.Column(db.String(30), nullable=False)
+    category = db.Column(db.String(30), nullable=False)
 
     def get_id(self):
         return self.id
@@ -107,6 +109,6 @@ class Incident(db.Model):
             'audio_file_path': self.audio_file_path,
             'description': self.description,
             'in_need_id': self.in_need_id,
-            'num_of_helpers': len(self.helpers),
+            'helpers': [helper.to_json() for helper in self.helpers],
             'status': self.status
         }

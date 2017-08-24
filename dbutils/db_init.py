@@ -8,7 +8,7 @@ def InitDB():
     u3 = User(allergies='Cats', id_number='209499659', blood_type='A+', username='gNir', uuid='12645678901234567890')
 
     i1 = Incident(lat=10.5, long=12.2, audio_file_path="tmp/a.avi",
-                  description="Joni gay", in_need_id=u1.get_id(), helpers=[u3], status="running")
+                  description="Joni gay", in_need_id=u1.get_id(), helpers=[u3], status="running", category='')
     u2 = User(incidents_helped=[i1], incidents_in_need=[i1], allergies='Cats', id_number='204499359',
               blood_type='B+', username='joni', uuid='12345678901234567890')
     db.session.add_all([u1, u2, i1])
