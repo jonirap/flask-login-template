@@ -12,12 +12,9 @@ def InitDB():
                   description="Joni gay", in_need_id=u1.get_id(), helpers=[], status="running", category='')
     u2 = User(incidents_helped=[], incidents_in_need=[i1], allergies='Cats', id_number='204499359',
               blood_type='B+', username='joni', uuid='12345678901234567890')
-    db.session.add_all([u1, u2, i1])
+    db.session.add_all([u1, u2, u3, i1])
     db.session.commit()
 
-    WORLD_GRID.add_person({'id': u1.id, 'longitude': 40.123, 'latitude': 40.222})
-    WORLD_GRID.add_person({'id': u3.id, 'longitude': 41.123, 'latitude': 41.222})
-    WORLD_GRID.add_person({'id': u2.id, 'longitude': 30.123, 'latitude': 15.222})
 
     users = User.query.all()
     for u in users:

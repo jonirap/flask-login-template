@@ -116,7 +116,7 @@ class Incident(db.Model):
             'status': self.status,
             'messages': [message.to_json() for message in sorted(Message.query
                                                                  .filter_by(incident_id=self.id).all(),
-                                                                 key=lambda m: m.insert_time.toordinal())]
+                                                                 key=lambda m: m.insert_time)]
         }
 
     def save(self):
