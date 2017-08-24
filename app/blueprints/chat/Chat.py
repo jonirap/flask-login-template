@@ -7,10 +7,8 @@ import datetime
 
 class ChatView(MethodView):
     def get(self):
-        print "hi"
-        chat = Incident.query.filter_by(incident_id=request.args.get('incident_id'))
-        chat.save()
-        return jsonify(chat=chat.to_json())
+        incident = Incident.query.filter_by(id=request.args.get('incident_id')).first()
+        return jsonify(incident=incident.to_json()['messages'])
 
     def post(self):
         data = json.loads(request.data)
