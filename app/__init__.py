@@ -1,6 +1,7 @@
 
 from flask import Flask, render_template
 from flask.ext.bootstrap import Bootstrap
+from flask.ext.pushjack import FlaskAPNS
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
 from app.auth import authorized
@@ -11,6 +12,10 @@ app = Flask(__name__)
 app.config.from_object('config')
 
 app.debug = True
+
+#Enable push notifactions
+client = FlaskAPNS()
+client.init_app(app)
 
 #Enable Bootstrap
 Bootstrap(app)
