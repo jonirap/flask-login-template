@@ -19,4 +19,3 @@ class ChatView(MethodView):
             return jsonify(ok=True)
         except Exception as e:
             return jsonify(ok=False, error=e.message)
-
