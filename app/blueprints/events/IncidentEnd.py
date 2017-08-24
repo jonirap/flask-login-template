@@ -5,7 +5,6 @@ from flask.views import MethodView
 from app.auth.models import *
 from app import db
 
-
 class IncidentEndView(MethodView):
     def post(self):
         try:
