@@ -5,8 +5,7 @@ from app.auth.models import *
 def InitDB():
     print "Pre-populating DB"
 
-    u1 = User(allergies='Cats', id_number='209499359', blood_type='A+', username=u'gNir', password=u'123456',
-              email='admin@example.com')
+    u1 = User(allergies='Cats', id_number='209499359', blood_type='A+', username='gNir', uuid='12345678901234567890')
 
     db.session.add(u1)
     db.session.commit()

@@ -15,16 +15,18 @@ class SignUpView(MethodView):
         user = User.query.filter_by(id_number=form.id_number.data).first()
         if user is None:
             try:
-                db.session.add(User(allergies=form.allergies.data,
-                                    id_number=form.id_number.data,
-                                    blood_type=form.blood_type.data,
-                                    fullname=form.fullname.data,
-                                    email=form.email.data,
-                                    uuid=form.uuid.data))
+                user = User(allergies=form.allergies.data,
+                            id_number=form.id_number.data,
+                            blood_type=form.blood_type.data,
+                            username=form.fullname.data,
+                            uuid=form.uuid.data,
+                            can_help=form.can_help.data)
+                db.session.add(user)
                 db.session.commit()
                 if login_user(user, remember=True):
                     session.permanent = True
-            except:
+            except Exception as e:
+                print e.message
                 return jsonify(ok=False, error='Error adding to DB')
-
-        return jsonify(ok=True)
+            return jsonify(ok=True)
+        return jsonify(ok=False, error='id number exists')

@@ -13,7 +13,7 @@ class User(UserMixin, db.Model):
     uuid = db.Column(db.String(20), nullable=False)
     blood_type = db.Column(db.String(3), nullable=False)
     allergies = db.Column(db.Text)
-    fullname = db.Column(db.Text, nullable=False)
+    username = db.Column(db.Text, nullable=False)
     can_help = db.Column(db.Boolean, nullable=False, default=False)
     active = db.Column(db.Boolean, nullable=False, default=True)
 
