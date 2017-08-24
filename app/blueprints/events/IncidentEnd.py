@@ -3,7 +3,6 @@ from flask.views import MethodView
 
 from app import Incident, db
 
-
 class IncidentEndView(MethodView):
     def post(self):
         incident_id = request.data['incidentID']
