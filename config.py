@@ -6,6 +6,7 @@ BOOTSTRAP_FONTAWESOME = True
 ENABLED_VIEWS = [
     'app.blueprints.home',
     'app.blueprints.auth',
+    'app.blueprints.events',
 #    'app.blueprints.querybuilder',
 #    'app.blueprints.overviewer',
 ]
