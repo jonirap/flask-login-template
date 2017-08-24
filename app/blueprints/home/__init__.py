@@ -1,4 +1,4 @@
-__author__ = 'Kieran'
+
 
 from flask import Blueprint
 from Home import HomeView

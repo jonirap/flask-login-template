@@ -1,4 +1,4 @@
-__author__ = 'keyz'
+
 '''SQLAlchemy Models
     Models used in SQL
 '''

@@ -1,4 +1,4 @@
-__author__ = 'Kieran'
+
 # coding: utf8
 """
 

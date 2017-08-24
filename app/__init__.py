@@ -1,4 +1,4 @@
-__author__ = 'keyz'
+
 from flask import Flask, render_template
 from flask.ext.bootstrap import Bootstrap
 from flask.ext.sqlalchemy import SQLAlchemy

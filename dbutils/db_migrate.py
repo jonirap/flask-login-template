@@ -1,5 +1,5 @@
 #!flask/bin/python
-# __author__ = 'Kieran'
+#
 import imp
 from migrate.versioning import api
 from app import db
