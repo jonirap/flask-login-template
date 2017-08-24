@@ -13,13 +13,13 @@ class NotificationsView(MethodView):
         data = json.loads(request.data)
         nearby_people = WORLD_GRID.get_nearby_people(data)
         nearby_people_uuid = [person['uuid'] for person in nearby_people]
+        # todo: tals job
+        incident_id = ''
         client = FlaskAPNS()
         client.init_app(app)
         with app.app_context():
             to_rescue = User.query.filter_by(data['id'])
             client.send(nearby_people_uuid, "help! there is an emergency", title="emergency alert",
-                                  extra={'to_rescue': to_rescue.to_json() + {'longitude': data['longitude'],
-                                                                             'latitude': data['latitude']},
-                                         'incident_id': 'id'})
+                                  extra={'to_rescue': to_rescue.to_json(), 'incident_id': incident_id})
 
 
