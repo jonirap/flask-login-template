@@ -53,6 +53,6 @@ ADMINS = ['keyz182@gmail.com']
 
 DEBUG = True
 
-APNS_CERTIFICATE = r"C:\Users\Noaluk\Projects\flask-login-template\pushcert.pem"
+APNS_CERTIFICATE = r"pushcert.pem"
 
 
