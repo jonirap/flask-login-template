@@ -62,7 +62,7 @@ class WorldGrid(object):
             self.add_person(person)
 
     def get_nearby_people(self, person):
-        longitude, latitude = self._degrees_to_numbers(person['longitude'], person['latitude'])
+        longitude, latitude = self._degrees_to_numbers(person['long'], person['lat'])
         i, j = int(round(longitude * self.cubes)), int(round(latitude * self.cubes))
         return [person for add_i, add_j in self.RANGES for person in self.world[i + add_i][j + add_j]]
 
