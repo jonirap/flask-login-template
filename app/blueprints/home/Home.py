@@ -1,4 +1,4 @@
-__author__ = 'Kieran'
+
 from flask.views import MethodView
 from flask import render_template
 from flask.ext.login import current_user
