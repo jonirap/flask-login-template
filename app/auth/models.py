@@ -44,6 +44,21 @@ class User(UserMixin, db.Model):
         return '<%s(%r, %r)>' % (self.__class__.__name__, self.id_number,
                                  self.username)
 
+    def to_json(self):
+        return {
+            'id': self.id,
+            'id_number': self.id_number,
+            'uuid': self.uuid,
+            'blood_type': self.blood_type,
+            'allergies': self.allergies,
+            'username': self.username,
+            'can_help': self.can_help,
+            'can_help_medical': self.can_help_medical,
+            'active': self.active,
+            'incidents_in_need': self.incidents_in_need,
+            'incidents_helped': self.incidents_helped
+        }
+
 
 class Incident(db.Model):
     __tablename__ = 'incident'
