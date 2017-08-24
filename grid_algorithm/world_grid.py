@@ -7,7 +7,7 @@ class WorldGrid(object):
     DEGREES = 360
     KM_PER_DEGREE = 111
     MINUS_MINUS = 0
-    MINUS_PLUS =  90
+    MINUS_PLUS = 90
     PLUS_MINUS = 180
     PLUS_PLUS = 270
 
@@ -37,23 +37,24 @@ class WorldGrid(object):
 
         :param person: the person (dict with id, longitude and latitude and whatever else you want)
         """
-        self.remove_person_if_exists(person)
+        if person['id'] in self.people_locations:
+            self.remove_person(person)
         longitude, latitude = self._degrees_to_numbers(person['longitude'], person['latitude'])
         i, j = int(round(longitude * self.cubes)), int(round(latitude * self.cubes))
         self.world[i][j].append(person)
         self.people_locations[person['id']] = (i, j)
 
-    def remove_person_if_exists(self, person):
+    def remove_person(self, person):
         """
         This function checks if we already added that person before and removes previous
         tries.
         """
-        if person['id'] in self.people_locations:
-            i, j = self.people_locations[person['id']]
-            for resident in self.world[i][j]:
-                if resident['id'] == person['id']:
-                    self.world[i][j].remove(resident)
-                    break
+        i, j = self.people_locations[person['id']]
+        for resident in self.world[i][j]:
+            if resident['id'] == person['id']:
+                self.world[i][j].remove(resident)
+                break
+        del self.people_locations[person['id']]
 
     def add_people(self, people):
         for person in people:
