@@ -1,4 +1,4 @@
-__author__ = 'keyz'
+
 BOOTSTRAP_USE_CDN = True
 BOOTSTRAP_USE_MINIFIED = True
 BOOTSTRAP_FONTAWESOME = True

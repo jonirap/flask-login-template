@@ -1,4 +1,4 @@
-__author__ = 'Kieran'
+
 from flask import flash, redirect
 from flask.views import MethodView
 
