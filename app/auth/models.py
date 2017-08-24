@@ -5,6 +5,7 @@
 from flask.ext.login import UserMixin
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
+from consts import WORLD_GRID
 
 from app import db
 
@@ -44,6 +45,24 @@ class User(UserMixin, db.Model):
         return '<%s(%r, %r)>' % (self.__class__.__name__, self.id_number,
                                  self.username)
 
+    def to_json(self):
+        i, j = WORLD_GRID.people_locations[self.id]
+        return {
+            'id': self.id,
+            'id_number': self.id_number,
+            'uuid': self.uuid,
+            'blood_type': self.blood_type,
+            'allergies': self.allergies,
+            'username': self.username,
+            'can_help': self.can_help,
+            'can_help_medical': self.can_help_medical,
+            'active': self.active,
+            'incidents_in_need': self.incidents_in_need,
+            'incidents_helped': self.incidents_helped,
+            'longitude': WORLD_GRID.world[i][j][self.id]['longitude'],
+            'latitude': WORLD_GRID.world[i][j][self.id]['latitude']
+        }
+
 
 class Incident(db.Model):
     __tablename__ = 'incident'
@@ -55,7 +74,6 @@ class Incident(db.Model):
     in_need_id = db.Column(db.Integer, ForeignKey('user.id'))
     helpers = relationship('User', secondary=association_table)
     status = db.Column(db.String(30), nullable=False)
-
 
     def get_id(self):
         return self.id
@@ -80,3 +98,15 @@ class Incident(db.Model):
     def __repr__(self):
         return '<%s(%r, %r)>' % (self.__class__.__name__, self.id_number,
                                  self.username)
+
+    def to_json(self):
+        return {
+            'id': self.id,
+            'latitude': self.lat,
+            'longitude': self.long,
+            'audio_file_path': self.audio_file_path,
+            'description': self.description,
+            'in_need_id': self.in_need_id,
+            'num_of_helpers': len(self.helpers),
+            'status': self.status
+        }
