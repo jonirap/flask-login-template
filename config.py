@@ -1,3 +1,5 @@
+from grid_algorithm import WorldGrid
+
 __author__ = 'keyz'
 BOOTSTRAP_USE_CDN = True
 BOOTSTRAP_USE_MINIFIED = True
@@ -47,3 +49,6 @@ MAIL_PASSWORD = None
 ADMINS = ['keyz182@gmail.com']
 
 DEBUG = True
+
+WOURLD_GRID = WorldGrid()
+
