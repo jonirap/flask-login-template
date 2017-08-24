@@ -7,9 +7,10 @@ class WorldGrid(object):
     DEGREES = 360
     KM_PER_DEGREE = 111
     MINUS_MINUS = 0
-    MINUS_PLUS =  90
+    MINUS_PLUS = 90
     PLUS_MINUS = 180
     PLUS_PLUS = 270
+    RANGES = [(-1, -1), (0, -1), (-1, 0), (0, 0), (0, 1), (1, 0), (1, 1)]
 
     def __init__(self, resolution=10):
         """
@@ -37,31 +38,33 @@ class WorldGrid(object):
 
         :param person: the person (dict with id, longitude and latitude and whatever else you want)
         """
-        self.remove_person_if_exists(person)
+        if person['id'] in self.people_locations:
+            self.remove_person(person)
         longitude, latitude = self._degrees_to_numbers(person['longitude'], person['latitude'])
         i, j = int(round(longitude * self.cubes)), int(round(latitude * self.cubes))
         self.world[i][j].append(person)
         self.people_locations[person['id']] = (i, j)
 
-    def remove_person_if_exists(self, person):
+    def remove_person(self, person):
         """
         This function checks if we already added that person before and removes previous
         tries.
         """
-        if person['id'] in self.people_locations:
-            i, j = self.people_locations[person['id']]
-            for resident in self.world[i][j]:
-                if resident['id'] == person['id']:
-                    self.world[i][j].remove(resident)
-                    break
+        i, j = self.people_locations[person['id']]
+        for resident in self.world[i][j]:
+            if resident['id'] == person['id']:
+                self.world[i][j].remove(resident)
+                break
+        del self.people_locations[person['id']]
 
     def add_people(self, people):
         for person in people:
             self.add_person(person)
 
     def get_nearby_people(self, person):
-        longitude, latitude = self._degrees_to_numbers(person['longitude'], person['latitude'])
-        return self.world[int(round(longitude * self.cubes))][int(round(latitude * self.cubes))]
+        longitude, latitude = self._degrees_to_numbers(person['long'], person['lat'])
+        i, j = int(round(longitude * self.cubes)), int(round(latitude * self.cubes))
+        return [person for add_i, add_j in self.RANGES for person in self.world[i + add_i][j + add_j]]
 
     def _degrees_to_numbers(self, longitude, latitude):
         """

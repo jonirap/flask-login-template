@@ -5,6 +5,7 @@
 from flask.ext.login import UserMixin
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
+from consts import WORLD_GRID
 
 from app import db
 
@@ -27,6 +28,7 @@ class User(UserMixin, db.Model):
     active = db.Column(db.Boolean, nullable=False, default=True)
     incidents_in_need = relationship('Incident')
     incidents_helped = relationship('Incident', secondary=association_table)
+    messages = relationship('message')
 
     def is_authenticated(self):
         return True
@@ -44,6 +46,23 @@ class User(UserMixin, db.Model):
         return '<%s(%r, %r)>' % (self.__class__.__name__, self.id_number,
                                  self.username)
 
+    def to_json(self):
+        i, j = WORLD_GRID.people_locations[self.id]
+        return {
+            'id': self.id,
+            'id_number': self.id_number,
+            'uuid': self.uuid,
+            'blood_type': self.blood_type,
+            'allergies': self.allergies,
+            'username': self.username,
+            'can_help': self.can_help,
+            'can_help_medical': self.can_help_medical,
+            'longitude': WORLD_GRID.world[i][j][self.id]['longitude'],
+            'latitude': WORLD_GRID.world[i][j][self.id]['latitude'],
+            'messages': [message.get_message() for message in sorted(Message.query
+                                                                     .filter_by(chat_id=self.id).all(),
+                                                                     key=lambda m: m.insert_time.timedelta)]
+        }
     def save(self):
         db.session.add(self)
         db.session.commit()
@@ -92,32 +111,10 @@ class Incident(db.Model):
         return self
 
 
-class Chat(db.Model):
-    __tablename__ = 'chat'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    incident_id = db.Column(db.Integer, ForeignKey("incident.id"), nullable=False),
-    messages = relationship('Message')
-
-    def to_json(self):
-        return {
-            'id': self.id,
-            'incident_id': self.incident_id,
-            'messages': [message.get_message() for message in sorted(Message.query
-                                                                     .filter_by(chat_id=self.id).all(),
-                                                                     key=lambda m: m.insert_time.timedelta)]
-        }
-
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-        return self
-
-
 class Message(db.Model):
     __tablename__ = 'message'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     incident_id = db.Column(db.Integer, ForeignKey("incident.id"), nullable=False),
-    chat_id = db.Column(db.Integer, ForeignKey("chat.id"), nullable=False),
     user_id = db.Column(db.Integer, ForeignKey("user.id"), nullable=False),
     message = db.Column(db.String)
     insert_time = db.Column(db.Date)
@@ -130,3 +127,15 @@ class Message(db.Model):
         db.session.add(self)
         db.session.commit()
         return self
+
+    def to_json(self):
+        return {
+            'id': self.id,
+            'latitude': self.lat,
+            'longitude': self.long,
+            'audio_file_path': self.audio_file_path,
+            'description': self.description,
+            'in_need_id': self.in_need_id,
+            'helpers': [helper.to_json() for helper in self.helpers],
+            'status': self.status
+        }

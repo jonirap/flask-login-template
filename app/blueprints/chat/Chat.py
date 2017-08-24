@@ -8,15 +8,14 @@ import datetime
 class ChatView(MethodView):
     def get(self):
         data = json.loads(request.data)
-        if 'chat_id' in data:
-            return jsonify(chat=Chat.query.filter_by(id=data['chat_id']).first().to_json())
-        else:
-            chat = Chat(incident_id=data['incident_id'])
-            chat.save()
-            return jsonify(chat=chat.to_json())
+        chat = Incident.query.filter_by(incident_id=data['incident_id'])
+        chat.save()
+        return jsonify(chat=chat.to_json())
 
-    def post(self):
-        data = json.loads(request.data)
-        message = Message(incident_id=data['incident_id'], chat_id=data['chat_id'],
-                          user_id=data['user_id'], message=data['message'], insert_time=datetime.datetime.today())
-        message.save()
+
+def post(self):
+    data = json.loads(request.data)
+    message = Message(incident_id=data['incident_id'], ser_id=data['user_id'],
+                      message=data['message'], insert_time=datetime.datetime.today())
+    message.save()
+
