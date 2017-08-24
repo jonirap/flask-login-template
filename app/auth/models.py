@@ -79,3 +79,15 @@ class Incident(db.Model):
     def __repr__(self):
         return '<%s(%r, %r)>' % (self.__class__.__name__, self.id_number,
                                  self.username)
+
+    def to_json(self):
+        return {
+            'id': self.id,
+            'latitude': self.lat,
+            'longitude': self.long,
+            'audio_file_path': self.audio_file_path,
+            'description': self.description,
+            'in_need_id': self.in_need_id,
+            'num_of_helpers': len(self.helpers),
+            'status': self.status
+        }
