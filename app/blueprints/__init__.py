@@ -1,4 +1,4 @@
-__author__ = 'Kieran'
+
 
 def register_blueprints(app):
     from config import ENABLED_VIEWS

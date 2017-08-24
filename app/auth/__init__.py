@@ -1,4 +1,4 @@
-__author__ = 'Kieran'
+
 from functools import update_wrapper
 
 from flask import current_app, abort
