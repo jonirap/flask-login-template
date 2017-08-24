@@ -28,7 +28,7 @@ class IncidentSpeechView(MethodView):
     @staticmethod
     def get_nearby_people():
         data = json.loads(request.data)
-        # data["id"] = current_user.id_number
+        data["id"] = current_user.id_number
         nearby_people = WORLD_GRID.get_nearby_people(data)
         nearby_people_uuid = [User.query.filter_by(id=person['id']).first().uuid for person in nearby_people]
         return nearby_people_uuid
