@@ -1,7 +1,6 @@
 from flask import jsonify, session
 from flask.ext.login import current_user, login_user
 from flask.views import MethodView
-from flask_pushjack import FlaskAPNS
 
 from SignUpForm import SignUpForm
 from app import db, app
