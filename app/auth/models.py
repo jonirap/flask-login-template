@@ -55,7 +55,7 @@ class Incident(db.Model):
     in_need_id = db.Column(db.Integer, ForeignKey('user.id'))
     helpers = relationship('User', secondary=association_table)
     status = db.Column(db.String(30), nullable=False)
-
+    chat = relationship('Chat')
 
     def get_id(self):
         return self.id
@@ -80,3 +80,33 @@ class Incident(db.Model):
     def __repr__(self):
         return '<%s(%r, %r)>' % (self.__class__.__name__, self.id_number,
                                  self.username)
+
+
+class Chat(db.Model):
+    __tablename__ = 'chat'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    incident_id = db.Column(db.Integer, ForeignKey("incident.id"), nullable=False),
+    messages = relationship('Message')
+
+    def to_json(self):
+        return {
+            'id': self.id,
+            'incident_id': self.incident_id,
+            'messages': [message.get_message() for message in sorted(Message.query
+                                                                     .filter_by(chat_id=self.id).all(),
+                                                                     key=lambda m: m.insert_time.timedelta)]
+        }
+
+
+class Message(db.Model):
+    __tablename__ = 'message'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    incident_id = db.Column(db.Integer, ForeignKey("incident.id"), nullable=False),
+    chat_id = db.Column(db.Integer, ForeignKey("chat.id"), nullable=False),
+    user_id = db.Column(db.Integer, ForeignKey("user.id"), nullable=False),
+    message = db.Column(db.String)
+    insert_time = db.Column(db.Date)
+
+    def get_message(self):
+        return "time {}\nusername {}\n{}".format(str(self.insert_time),
+                                                 User.query.filter_by(id=self.user_id).first().username, self.message)

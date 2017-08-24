@@ -1,7 +1,7 @@
-
 from flask.views import MethodView
 from flask import render_template
 from flask.ext.login import current_user
+
 
 class HomeView(MethodView):
     def get(self):
