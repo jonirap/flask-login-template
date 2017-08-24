@@ -10,7 +10,8 @@ ENABLED_VIEWS = [
     'app.blueprints.home',
     'app.blueprints.auth',
     'app.blueprints.events',
-    'app.blueprints.incident'
+    'app.blueprints.incident',
+    'app.blueprints.chat',
 #    'app.blueprints.querybuilder',
 #    'app.blueprints.overviewer',
 ]
