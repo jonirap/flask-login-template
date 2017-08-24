@@ -54,5 +54,5 @@ ADMINS = ['keyz182@gmail.com']
 DEBUG = True
 
 APNS_CERTIFICATE = r"pushcert.pem"
-
+APNS_SANDBOX = True
 
