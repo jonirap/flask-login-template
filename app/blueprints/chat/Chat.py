@@ -11,8 +11,12 @@ class ChatView(MethodView):
         return jsonify(incident=incident.to_json()['messages'])
 
     def post(self):
-        data = json.loads(request.data)
-        message = Message(incident_id=data['incident_id'], ser_id=data['user_id'],
-                          message=data['message'], insert_time=datetime.datetime.today())
-        message.save()
+        try:
+            data = json.loads(request.data)
+            message = Message(incident_id=data['incident_id'], user_id=data['user_id'],
+                              message=data['message'], insert_time=datetime.datetime.now())
+            message.save()
+            return jsonify(ok=True)
+        except Exception as e:
+            return jsonify(ok=False, error=e.message)
 

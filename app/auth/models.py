@@ -114,9 +114,9 @@ class Incident(db.Model):
             'in_need_id': self.in_need_id,
             'helpers': [helper.to_json() for helper in self.helpers],
             'status': self.status,
-            'messages': [message.get_message() for message in sorted(Message.query
-                                                                     .filter_by(chat_id=self.id).all(),
-                                                                     key=lambda m: m.insert_time.timedelta)]
+            'messages': [message.to_json() for message in sorted(Message.query
+                                                                 .filter_by(incident_id=self.id).all(),
+                                                                 key=lambda m: m.insert_time.toordinal())]
         }
 
     def save(self):
@@ -133,11 +133,14 @@ class Message(db.Model):
     message = db.Column(db.String)
     insert_time = db.Column(db.Date)
 
-    def get_message(self):
-        return "time {}\nusername {}\n{}".format(str(self.insert_time),
-                                                 User.query.filter_by(id=self.user_id).first().username, self.message)
-
     def save(self):
         db.session.add(self)
         db.session.commit()
         return self
+
+    def to_json(self):
+        return {
+            'time': self.insert_time,
+            'username': User.query.filter_by(id=self.user_id).first().username,
+            'message': self.message
+        }
