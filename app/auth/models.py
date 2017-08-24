@@ -5,6 +5,7 @@
 from flask.ext.login import UserMixin
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
+from consts import WORLD_GRID
 
 from app import db
 
@@ -45,6 +46,7 @@ class User(UserMixin, db.Model):
                                  self.username)
 
     def to_json(self):
+        i, j = WORLD_GRID.people_locations[self.id]
         return {
             'id': self.id,
             'id_number': self.id_number,
@@ -56,7 +58,9 @@ class User(UserMixin, db.Model):
             'can_help_medical': self.can_help_medical,
             'active': self.active,
             'incidents_in_need': self.incidents_in_need,
-            'incidents_helped': self.incidents_helped
+            'incidents_helped': self.incidents_helped,
+            'longitude': WORLD_GRID.world[i][j][self.id]['longitude'],
+            'latitude': WORLD_GRID.world[i][j][self.id]['latitude']
         }
 
 
