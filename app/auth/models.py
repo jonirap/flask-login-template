@@ -19,7 +19,7 @@ class User(UserMixin, db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     id_number = db.Column(db.Integer, unique=True, nullable=False)
-    uuid = db.Column(db.String(20), nullable=False)
+    uuid = db.Column(db.String(64), nullable=False)
     blood_type = db.Column(db.String(3), nullable=False)
     allergies = db.Column(db.Text)
     username = db.Column(db.Text, nullable=False)
