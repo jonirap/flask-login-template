@@ -1,15 +1,15 @@
-from Volunteer import VolunteerView
-from Notifications import NotificationsView
+from IncidentEnd import IncidentEndView
 from IncidentState import IncidentStateView
-
-__author__ = 'Kieran'
-
+from Volunteer import VolunteerView
 from flask import Blueprint
 
-notifications = Blueprint('notifications', __name__, template_folder='templates/notifications')
+from app.events.Notifications import NotificationsView
+
+notifications = Blueprint('event', __name__, template_folder='templates/events')
 notifications.add_url_rule('/help', view_func=NotificationsView.as_view('notifications'))
 notifications.add_url_rule('/i_want_to_help', view_func=VolunteerView.as_view('volunteer'))
 notifications.add_url_rule('/incident_state', view_func=IncidentStateView.as_view('incident_state'))
+notifications.add_url_rule('/finished', view_func=IncidentEndView.as_view('finished'))
 
 
 class View:
