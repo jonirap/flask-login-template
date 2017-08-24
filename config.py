@@ -1,5 +1,3 @@
-from grid_algorithm import WorldGrid
-
 __author__ = 'keyz'
 BOOTSTRAP_USE_CDN = True
 BOOTSTRAP_USE_MINIFIED = True
@@ -50,5 +48,6 @@ ADMINS = ['keyz182@gmail.com']
 
 DEBUG = True
 
-WOURLD_GRID = WorldGrid()
+APNS_CERTIFICATE = '<path/to/certificate.pem>'
+
 
