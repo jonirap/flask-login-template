@@ -1,4 +1,7 @@
 
+from grid_algorithm import WorldGrid
+
+__author__ = 'keyz'
 BOOTSTRAP_USE_CDN = True
 BOOTSTRAP_USE_MINIFIED = True
 BOOTSTRAP_FONTAWESOME = True
@@ -6,6 +9,9 @@ BOOTSTRAP_FONTAWESOME = True
 ENABLED_VIEWS = [
     'app.blueprints.home',
     'app.blueprints.auth',
+    'app.blueprints.events',
+    'app.blueprints.incident',
+    'app.blueprints.chat',
 #    'app.blueprints.querybuilder',
 #    'app.blueprints.overviewer',
 ]
@@ -47,3 +53,7 @@ MAIL_PASSWORD = None
 ADMINS = ['keyz182@gmail.com']
 
 DEBUG = True
+
+APNS_CERTIFICATE = r"pushcert.pem"
+APNS_SANDBOX = True
+
