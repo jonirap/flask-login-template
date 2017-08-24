@@ -1,9 +1,9 @@
+from flask import Blueprint
+
 from IncidentEnd import IncidentEndView
 from IncidentState import IncidentStateView
 from Volunteer import VolunteerView
-from flask import Blueprint
-
-from app.events.Notifications import NotificationsView
+from app.blueprints.events.Notifications import NotificationsView
 
 events = Blueprint('event', __name__, template_folder='templates/events')
 events.add_url_rule('/help', view_func=NotificationsView.as_view('notifications'))
