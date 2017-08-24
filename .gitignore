@@ -2,3 +2,4 @@ flask
 *.db
 tmp
 *.pyc
+.idea/
