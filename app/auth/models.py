@@ -56,7 +56,6 @@ class Incident(db.Model):
     helpers = relationship('User', secondary=association_table)
     status = db.Column(db.String(30), nullable=False)
 
-
     def get_id(self):
         return self.id
 
