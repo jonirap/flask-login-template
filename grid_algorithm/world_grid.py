@@ -10,6 +10,7 @@ class WorldGrid(object):
     MINUS_PLUS = 90
     PLUS_MINUS = 180
     PLUS_PLUS = 270
+    RANGES = [(-1, -1), (0, -1), (-1, 0), (0, 0), (0, 1), (1, 0), (1, 1)]
 
     def __init__(self, resolution=10):
         """
@@ -62,7 +63,8 @@ class WorldGrid(object):
 
     def get_nearby_people(self, person):
         longitude, latitude = self._degrees_to_numbers(person['longitude'], person['latitude'])
-        return self.world[int(round(longitude * self.cubes))][int(round(latitude * self.cubes))]
+        i, j = int(round(longitude * self.cubes)), int(round(latitude * self.cubes))
+        return [person for add_i, add_j in self.RANGES for person in self.world[i + add_i][j + add_j]]
 
     def _degrees_to_numbers(self, longitude, latitude):
         """
