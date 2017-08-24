@@ -52,5 +52,6 @@ ADMINS = ['keyz182@gmail.com']
 
 DEBUG = True
 
-WOURLD_GRID = WorldGrid()
+APNS_CERTIFICATE = '<path/to/certificate.pem>'
+
 
