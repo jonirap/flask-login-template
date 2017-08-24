@@ -12,11 +12,11 @@ class ChatView(MethodView):
             return jsonify(chat=Chat.query.filter_by(id=data['chat_id']).first().to_json())
         else:
             chat = Chat(incident_id=data['incident_id'])
-            db.session.commit()
+            chat.save()
             return jsonify(chat=chat.to_json())
 
     def post(self):
         data = json.loads(request.data)
-        Message(incident_id=data['incident_id'], chat_id=data['chat_id'],
-                user_id=data['user_id'], message=data['message'], insert_time=datetime.datetime.today())
-        db.session.commit()
+        message = Message(incident_id=data['incident_id'], chat_id=data['chat_id'],
+                          user_id=data['user_id'], message=data['message'], insert_time=datetime.datetime.today())
+        message.save()

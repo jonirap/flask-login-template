@@ -44,6 +44,11 @@ class User(UserMixin, db.Model):
         return '<%s(%r, %r)>' % (self.__class__.__name__, self.id_number,
                                  self.username)
 
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+        return self
+
 
 class Incident(db.Model):
     __tablename__ = 'incident'
@@ -81,6 +86,11 @@ class Incident(db.Model):
         return '<%s(%r, %r)>' % (self.__class__.__name__, self.id_number,
                                  self.username)
 
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+        return self
+
 
 class Chat(db.Model):
     __tablename__ = 'chat'
@@ -97,6 +107,11 @@ class Chat(db.Model):
                                                                      key=lambda m: m.insert_time.timedelta)]
         }
 
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+        return self
+
 
 class Message(db.Model):
     __tablename__ = 'message'
@@ -110,3 +125,8 @@ class Message(db.Model):
     def get_message(self):
         return "time {}\nusername {}\n{}".format(str(self.insert_time),
                                                  User.query.filter_by(id=self.user_id).first().username, self.message)
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+        return self
