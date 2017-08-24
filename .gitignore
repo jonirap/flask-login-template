@@ -3,3 +3,4 @@ flask
 tmp
 *.pyc
 .idea/
+*.db-journal
