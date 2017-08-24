@@ -10,7 +10,7 @@ class IncidentEndView(MethodView):
     def post(self):
         try:
             data = json.loads(request.data)
-            incident = Incident.query.filter_by(id=data['incidentID']).first()
+            incident = Incident.query.filter_by(id=data['incident_id']).first()
             incident.status = "done"
             db.session.commit()
             return jsonify(ok=True)
