@@ -29,3 +29,5 @@ simplejson==3.3.0
 speaklater==1.3
 -e git://github.com/lugensa/sqlalchemy-migrate.git@cab6667cee6c939958531168107c9e2d4298e7bb#egg=sqlalchemy_migrate-dev
 wsgiref==0.1.2
+SpeechRecognition
+pydub
