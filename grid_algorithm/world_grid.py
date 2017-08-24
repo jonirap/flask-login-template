@@ -40,7 +40,7 @@ class WorldGrid(object):
         """
         if person['id'] in self.people_locations:
             self.remove_person(person)
-        longitude, latitude = self._degrees_to_numbers(person['longitude'], person['latitude'])
+        longitude, latitude = self._degrees_to_numbers(person['long'], person['lat'])
         i, j = int(round(longitude * self.cubes)), int(round(latitude * self.cubes))
         self.world[i][j].append(person)
         self.people_locations[person['id']] = (i, j)
@@ -62,10 +62,14 @@ class WorldGrid(object):
             self.add_person(person)
 
     def get_nearby_people(self, cur_person):
+        print cur_person
+        print self.people_locations
         longitude, latitude = self._degrees_to_numbers(cur_person['long'], cur_person['lat'])
         i, j = int(round(longitude * self.cubes)), int(round(latitude * self.cubes))
-        return [person for add_i, add_j in self.RANGES for person in self.world[i + add_i][j + add_j]
+        ret = [person for add_i, add_j in self.RANGES for person in self.world[i + add_i][j + add_j]
                 if not person['id'] == cur_person['id']]
+        print ret
+        return ret
 
     def _degrees_to_numbers(self, longitude, latitude):
         """
@@ -82,3 +86,11 @@ class WorldGrid(object):
         elif longitude < 0 and latitude > 0:
             return longitude + self.MINUS_PLUS, latitude + self.MINUS_PLUS
         return longitude + self.MINUS_MINUS, latitude + self.MINUS_MINUS
+
+
+if __name__ == '__main__':
+    WORLD_GRID = WorldGrid()
+    WORLD_GRID.add_person({'id': 1, 'long': 40.120003, 'lat': 40.220002})
+    WORLD_GRID.add_person({'id': 2, 'long': 40.120004, 'lat': 40.220002})
+    WORLD_GRID.add_person({'id': 3, 'long': 30.123, 'lat': 15.222})
+    print WORLD_GRID.get_nearby_people({'id': 1, 'long': 40.120003, 'lat': 40.220002})

@@ -7,7 +7,7 @@ from Categories import Category
 from consts import SPEECH_FOLDER, WORLD_GRID
 from flask import request, jsonify
 from flask.views import MethodView
-from app.auth.models import Incident
+from app.auth.models import Incident, User
 from flask.ext.login import current_user
 import json
 from app import app, client
@@ -28,9 +28,9 @@ class IncidentSpeechView(MethodView):
     @staticmethod
     def get_nearby_people():
         data = json.loads(request.data)
-        data["id"] = current_user.id_number
+        # data["id"] = current_user.id_number
         nearby_people = WORLD_GRID.get_nearby_people(data)
-        nearby_people_uuid = [person['uuid'] for person in nearby_people]
+        nearby_people_uuid = [User.query.filter_by(id=person['id']).first().uuid for person in nearby_people]
         return nearby_people_uuid
 
 
