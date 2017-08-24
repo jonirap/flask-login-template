@@ -1,9 +1,10 @@
 from flask import jsonify, session
 from flask.ext.login import current_user, login_user
 from flask.views import MethodView
+from flask_pushjack import FlaskAPNS
 
 from SignUpForm import SignUpForm
-from app import db
+from app import db, app
 from app.auth.models import User
 
 
@@ -21,6 +22,11 @@ class SignUpView(MethodView):
                             username=form.fullname.data,
                             uuid=form.uuid.data,
                             can_help=form.can_help.data).save()
+                client = FlaskAPNS()
+                client.init_app(app)
+                with app.app_context():
+                    client.send(user.uuid, "help! there is an emergency", title="emergency alert",
+                                extra={'to_rescue': user.to_json(), 'incident_id': "455454"})
                 if login_user(user, remember=True):
                     session.permanent = True
             except Exception as e:
