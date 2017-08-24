@@ -1,6 +1,7 @@
 import os
-
+import hebdepparser
 import pydub
+import requests
 
 from Categories import Category
 from consts import SPEECH_FOLDER
@@ -20,12 +21,17 @@ class IncidentSpeechView(MethodView):
         f.close()
         if not filename.endswith('.wav'):
             local_speech_file_path = convert_to_wav(local_speech_file_path)
-        data_text = convert_audio_file(local_speech_file_path).encode('utf-8')
+        data_text = convert_audio_file(local_speech_file_path)
 
-        category = Category.get(data_text)
+        try:
+            parsed_data_text = hebdepparser.parse(data_text.encode('utf-8'))
+        except requests.packages.urllib3.exceptions.MaxRetryError:
+            print 'did not parse because the parsing server is fucking dumb!'
+            parsed_data_text = data_text.encode('utf-8').split()
+
+        category = Category.get(parsed_data_text)
         incident = Incident(lat=10.5, long=12.2, audio_file_path=local_speech_file_path,
-                            description=data_text, in_need_id=1, helpers=[], status="", category=category)
-
+                            description=data_text, in_need_id=1, helpers=[], status="", category=category).save()
 
         return jsonify(incident_id=incident.id)
 

@@ -30,7 +30,7 @@ class Category(object):
         for category in CATEGORIES_SET:
             matches[category.NAME] = category.matches(keywords)
         ordered_list = sorted(matches.keys(), key=lambda x: matches[x])
-        if ordered_list[0] == ordered_list[1]:
+        if matches[ordered_list[0]] == matches[ordered_list[1]]:
             return 'Unknown'
         else:
             return ordered_list[0]

@@ -44,6 +44,11 @@ class User(UserMixin, db.Model):
         return '<%s(%r, %r)>' % (self.__class__.__name__, self.id_number,
                                  self.username)
 
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+        return self
+
 
 class Incident(db.Model):
     __tablename__ = 'incident'
@@ -55,7 +60,7 @@ class Incident(db.Model):
     in_need_id = db.Column(db.Integer, ForeignKey('user.id'))
     helpers = relationship('User', secondary=association_table)
     status = db.Column(db.String(30), nullable=False)
-
+    category = db.Column(db.String(30), nullable=False)
 
     def get_id(self):
         return self.id
@@ -80,3 +85,8 @@ class Incident(db.Model):
     def __repr__(self):
         return '<%s(%r, %r)>' % (self.__class__.__name__, self.id_number,
                                  self.username)
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+        return self
