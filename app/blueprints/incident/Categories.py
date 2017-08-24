@@ -38,7 +38,7 @@ class Category(object):
 
 
 class MedicalEmergency(Category):
-    NAME = 'Medical Emergency'
+    NAME = 'Medical'
     KEYWORDS = {'כואב', 'ראש', 'לב', 'בטן', 'הקיא', 'הקיאה', 'התעלף', 'התעלפה', 'משלשל', 'משלשלת', 'מתעלף', 'מקיא',
                 'מקיאה', 'מתעלפת', 'התקף', 'נפל', 'נפלה', 'אמבולנס'}
 
