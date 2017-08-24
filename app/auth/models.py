@@ -56,9 +56,6 @@ class User(UserMixin, db.Model):
             'username': self.username,
             'can_help': self.can_help,
             'can_help_medical': self.can_help_medical,
-            'active': self.active,
-            'incidents_in_need': self.incidents_in_need,
-            'incidents_helped': self.incidents_helped,
             'longitude': WORLD_GRID.world[i][j][self.id]['longitude'],
             'latitude': WORLD_GRID.world[i][j][self.id]['latitude']
         }
@@ -107,6 +104,6 @@ class Incident(db.Model):
             'audio_file_path': self.audio_file_path,
             'description': self.description,
             'in_need_id': self.in_need_id,
-            'num_of_helpers': len(self.helpers),
+            'helpers': [helper.to_json() for helper in self.helpers],
             'status': self.status
         }
