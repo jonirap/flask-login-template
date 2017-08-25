@@ -18,7 +18,10 @@ class SignUpView(MethodView):
                             blood_type=form.blood_type.data,
                             username=form.fullname.data,
                             uuid=form.uuid.data,
-                            can_help=form.can_help.data).save()
+                            can_help=form.can_help.data,
+                            can_help_medical=form.can_help_medical.data)
+                db.session.add(user)
+                db.session.commit()
                 if login_user(user, remember=True):
                     session.permanent = True
             except Exception as e:
