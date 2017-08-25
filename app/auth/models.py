@@ -47,7 +47,7 @@ class User(UserMixin, db.Model):
                                  self.username)
 
     def to_json(self):
-        i, j = WORLD_GRID.people_locations[self.id]
+        long, lat = WORLD_GRID.get_location_by_id(self.id)
         return {
             'id': self.id,
             'id_number': self.id_number,
@@ -56,8 +56,8 @@ class User(UserMixin, db.Model):
             'allergies': self.allergies,
             'username': self.username,
             'can_help_medical': self.can_help_medical,
-            'longitude': WORLD_GRID.world[i][j][self.id]['long'],
-            'latitude': WORLD_GRID.world[i][j][self.id]['lat'],
+            'longitude': long,
+            'latitude': lat
         }
 
     def save(self):

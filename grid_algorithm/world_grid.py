@@ -74,6 +74,13 @@ class WorldGrid(object):
         print ret
         return ret
 
+    def get_location_by_id(self, id):
+        i, j = self.people_locations[id]
+        for person in self.world[i][j]:
+            if person["id"] == id:
+                return person["long"], person["lat"]
+        return None
+
     def _degrees_to_numbers(self, longitude, latitude):
         """
         converts degrees to 360 number range
