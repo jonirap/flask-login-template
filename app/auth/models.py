@@ -24,7 +24,6 @@ class User(UserMixin, db.Model):
     blood_type = db.Column(db.String(3), nullable=False)
     allergies = db.Column(db.Text)
     username = db.Column(db.Text, nullable=False)
-    can_help = db.Column(db.Boolean, nullable=False, default=False)
     can_help_medical = db.Column(db.Boolean, nullable=False, default=False)
     active = db.Column(db.Boolean, nullable=False, default=True)
     incidents_in_need = relationship('Incident')
@@ -56,7 +55,6 @@ class User(UserMixin, db.Model):
             'blood_type': self.blood_type,
             'allergies': self.allergies,
             'username': self.username,
-            'can_help': self.can_help,
             'can_help_medical': self.can_help_medical,
             'longitude': WORLD_GRID.world[i][j][self.id]['long'],
             'latitude': WORLD_GRID.world[i][j][self.id]['lat'],

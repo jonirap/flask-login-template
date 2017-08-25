@@ -1,13 +1,19 @@
-from flask import request
+from flask import request, jsonify
 from flask.views import MethodView
 import json
-from config import WOURLD_GRID
 from app.auth.models import *
 
 
 class LocationsView(MethodView):
     def post(self):
-        # todo: update last seen in DB
-        data = json.dumps(request.data)
-        WOURLD_GRID.add_people(data)
-        return json.dumps({"status": "ok"})
+        # TODO: update last seen in DB
+        data = json.loads(request.data)
+        data['lat'] = float(data['lat'])
+        data['long'] = float(data['long'])
+        data['id'] = User.query.filter_by(uuid=change_id(data['uuid'])).first().id
+        WORLD_GRID.add_person(data)
+        return jsonify(ok=True)
+
+
+def change_id(id):
+    return id.replace('<', '').replace('>', '').replace(' ', '')
