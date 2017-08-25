@@ -140,7 +140,7 @@ class Message(db.Model):
 
     def to_json(self):
         return {
-            'time': self.insert_time,
+            'insert_time': self.insert_time,
             'username': User.query.filter_by(id=self.user_id).first().username,
             'message': self.message
         }
