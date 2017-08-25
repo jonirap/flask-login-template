@@ -12,13 +12,18 @@ class Language(Enum):
 
 
 def convert_audio_file(audio_file_path, language=Language.HEBREW):
-    print audio_file_path
+    print 'final ', audio_file_path
     assert isinstance(language, Language)
     assert isinstance(audio_file_path, basestring)
     assert os.path.isfile(audio_file_path)
 
     r = sr.Recognizer()
+    r.energy_threshold += 280
     with sr.AudioFile(audio_file_path) as source:
         audio = r.listen(source)
+        print audio
 
-    return r.recognize_google(audio, language=language.value)
+    try:
+        return r.recognize_google(audio, language=language.value)
+    except sr.UnknownValueError:
+        return ''

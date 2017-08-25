@@ -38,17 +38,19 @@ class IncidentSpeechView(MethodView):
 def convert_to_wav(not_wav_file_path):
     filename = get_filename(not_wav_file_path)
     wav_filename = '{}.wav'.format(filename)
+    print 'wav ', wav_filename
+    print 'not ', not_wav_file_path
     not_wav_file = pydub.AudioSegment.from_file(not_wav_file_path)
-    wv_file = not_wav_file.export(wav_filename, format='wav')
-    not_wav_file
+    wav_file = not_wav_file.export(os.path.join(SPEECH_FOLDER, wav_filename), format='wav')
     os.remove(not_wav_file_path)
     wav_file.close()
     return wav_filename
 
 
 def get_filename(not_wav_file_path):
-    original_filename = filename = not_wav_file_path.rsplit('.', 1)[0]
-    while filename in os.listdir(SPEECH_FOLDER):
+    original_filename = filename = os.path.basename(not_wav_file_path.rsplit('.', 1)[0])
+    files = os.listdir(SPEECH_FOLDER)
+    while filename + '.wav' in files:
         filename = randomize_filename(original_filename)
     return filename
 
@@ -69,8 +71,10 @@ def save_file():
 
 def create_incident():
     local_speech_file_path = save_file()
+    print local_speech_file_path
     local_speech_file_path = convert_to_wav(local_speech_file_path)
     data_text = convert_audio_file(os.path.join(SPEECH_FOLDER, local_speech_file_path))
+    print data_text
 
     try:
         parsed_data_text = hebdepparser.parse(data_text.encode('utf-8'), ip='192.168.0.106')
