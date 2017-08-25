@@ -100,8 +100,8 @@ class Incident(db.Model):
         return not equal
 
     def __repr__(self):
-        return '<%s(%r, %r)>' % (self.__class__.__name__, self.id_number,
-                                 self.username)
+        return '<%s(%r, %r)>' % (self.__class__.__name__, self.id,
+                                 self.status)
 
     def to_json(self):
         return {

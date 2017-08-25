@@ -26,4 +26,5 @@ def convert_audio_file(audio_file_path, language=Language.HEBREW):
     try:
         return r.recognize_google(audio, language=language.value)
     except sr.UnknownValueError:
+        print 'GOOGLE ERROR'
         return ''

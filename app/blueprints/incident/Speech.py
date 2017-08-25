@@ -17,18 +17,25 @@ from consts import SPEECH_FOLDER, WORLD_GRID
 class IncidentSpeechView(MethodView):
     def post(self):
         nearby_people_uuid = IncidentSpeechView.get_nearby_people()
+        print '\nnearby ', nearby_people_uuid
 
         incident = create_incident()
-        with app.app_context():
-            client.send(nearby_people_uuid, "Someone needs your help!", title="{} Emergency!".format(incident.category),
-                        extra={'incident': incident.to_json()})
+        print 'Create incident {}'.format(incident)
+        if nearby_people_uuid:
+            with app.app_context():
+                client.send(nearby_people_uuid, "Someone needs your help!",
+                            title="{} Emergency!".format(incident.category),
+                            extra={'incident': incident.to_json()})
+                print 'sent push notification'
 
-        return jsonify(incident_id=incident.id)
+                return jsonify(incident_id=incident.id)
+        else:
+            return jsonify(incident=incident.id)
 
     @staticmethod
     def get_nearby_people():
         data = {k: v for k, v in request.form.iteritems()}
-        data["id"] = current_user.id_number
+        data["id"] = current_user.id
         data['lat'], data['long'] = float(data['lat']), float(data['long'])
         nearby_people = WORLD_GRID.get_nearby_people(data)
         nearby_people_uuid = [User.query.filter_by(id=person['id']).first().uuid for person in nearby_people]
@@ -63,7 +70,8 @@ def randomize_filename(original_filename):
 
 def save_file():
     f = request.files.values()[0]
-    local_speech_file_path = os.path.join(SPEECH_FOLDER, f.filename)
+    only, ending = f.filename.rsplit('.', 1)
+    local_speech_file_path = os.path.join(SPEECH_FOLDER, randomize_filename(only) + '.{}'.format(ending))
     f.save(local_speech_file_path)
     f.close()
     return local_speech_file_path
@@ -73,11 +81,13 @@ def create_incident():
     local_speech_file_path = save_file()
     print local_speech_file_path
     local_speech_file_path = convert_to_wav(local_speech_file_path)
+    print '\nconverted to wav\n'
     data_text = convert_audio_file(os.path.join(SPEECH_FOLDER, local_speech_file_path))
-    print data_text
+    print '\nrecognized by google\n'
 
     try:
         parsed_data_text = hebdepparser.parse(data_text.encode('utf-8'), ip='192.168.0.106')
+        print '\nparsed\n'
     except requests.packages.urllib3.exceptions.MaxRetryError:
         print 'did not parse because the parsing server is fucking dumb!'
         parsed_data_text = data_text.encode('utf-8').split()
@@ -85,6 +95,7 @@ def create_incident():
     data = {k: v for k, v in request.form.iteritems()}
 
     category = Category.get(parsed_data_text)
+    print '\nCATEGORY: {}\n'.format(category)
     return Incident(lat=float(data['lat']), long=float(data['long']), audio_file_path=local_speech_file_path,
                     description=data_text,
                     in_need_id=current_user.id, helpers=[], status="", category=category).save()
