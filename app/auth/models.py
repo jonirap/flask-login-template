@@ -6,6 +6,7 @@ from flask.ext.login import UserMixin
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 from consts import WORLD_GRID
+import time
 
 from app import db
 
@@ -131,7 +132,7 @@ class Message(db.Model):
     incident_id = db.Column(db.Integer, ForeignKey('incident.id'))
     user_id = db.Column(db.Integer, ForeignKey('user.id'))
     message = db.Column(db.String)
-    insert_time = db.Column(db.Date)
+    insert_time = db.Column(db.Float)
 
     def save(self):
         db.session.add(self)

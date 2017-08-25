@@ -5,7 +5,7 @@ import json
 from flask_login import current_user
 
 from app.auth.models import *
-import time
+import datetime
 
 
 class ChatView(MethodView):
@@ -17,7 +17,7 @@ class ChatView(MethodView):
         try:
             data = json.loads(request.data)
             message = Message(incident_id=data['incident_id'], user_id=current_user.id,
-                              message=data['message'], insert_time=time.time())
+                              message=data['message'], insert_time=time.mktime(datetime.datetime.now().timetuple()))
             message.save()
             return jsonify(ok=True)
         except Exception as e:

@@ -83,4 +83,3 @@ def create_incident():
     category = Category.get(parsed_data_text)
     return Incident(lat=data['lat'], long=data['long'], audio_file_path=local_speech_file_path, description=data_text,
                     in_need_id=current_user.id, helpers=[], status="", category=category).save()
-
