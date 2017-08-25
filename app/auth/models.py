@@ -57,8 +57,8 @@ class User(UserMixin, db.Model):
             'username': self.username,
             'can_help': self.can_help,
             'can_help_medical': self.can_help_medical,
-            'longitude': WORLD_GRID.world[i][j][self.id]['longitude'],
-            'latitude': WORLD_GRID.world[i][j][self.id]['latitude'],
+            'longitude': WORLD_GRID.world[i][j][self.id]['long'],
+            'latitude': WORLD_GRID.world[i][j][self.id]['lat'],
         }
 
     def save(self):
