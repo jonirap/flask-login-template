@@ -12,7 +12,7 @@ from SpeechToText import convert_audio_file
 from app import app, client
 from app.auth.models import Incident, User
 from consts import SPEECH_FOLDER, WORLD_GRID
-
+from threading import Thread
 
 class IncidentSpeechView(MethodView):
     def post(self):
@@ -23,14 +23,16 @@ class IncidentSpeechView(MethodView):
         print 'Create incident {}'.format(incident)
         if nearby_people_uuid:
             with app.app_context():
-                client.send(nearby_people_uuid, "Someone needs your help!",
-                            title="{} Emergency!".format(incident.category),
-                            extra={'incident': incident.to_json()})
+                Thread(target=self.send_push_notification, args=[self, incident, nearby_people_uuid]).start()
+                self.send_push_notification(incident, nearby_people_uuid)
                 print 'sent push notification'
 
-                return jsonify(incident_id=incident.id)
-        else:
-            return jsonify(incident=incident.id)
+        return jsonify(incident_id=incident.id)
+
+    def send_push_notification(self, incident, nearby_people_uuid):
+        client.send(nearby_people_uuid, "Someone needs your help!",
+                    title="{} Emergency!".format(incident.category),
+                    extra={'incident': incident.to_json()})
 
     @staticmethod
     def get_nearby_people():
@@ -86,7 +88,7 @@ def create_incident():
     print '\nrecognized by google\n'
 
     try:
-        parsed_data_text = hebdepparser.parse(data_text.encode('utf-8'), ip='192.168.0.106')
+        parsed_data_text = hebdepparser.parse(data_text.encode('utf-8'), ip='192.168.0.102')
         print '\nparsed\n'
     except requests.packages.urllib3.exceptions.MaxRetryError:
         print 'did not parse because the parsing server is fucking dumb!'
