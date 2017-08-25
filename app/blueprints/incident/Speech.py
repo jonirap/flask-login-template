@@ -16,14 +16,14 @@ from SpeechToText import convert_audio_file
 
 class IncidentSpeechView(MethodView):
     def post(self):
-        nearby_people_uuid = IncidentSpeechView.get_nearby_people()
+        # nearby_people_uuid = IncidentSpeechView.get_nearby_people()
+        #
+        # incident = create_incident()
+        # with app.app_context():
+        #     client.send(nearby_people_uuid, "Someone needs your help!", title="{} Emergency!".format(incident.category),
+        #                 extra={'to_rescue': current_user.to_json(), 'incident_id': incident.id})
 
-        incident = create_incident()
-        with app.app_context():
-            client.send(nearby_people_uuid, "Someone needs your help!", title="{} Emergency!".format(incident.category),
-                        extra={'to_rescue': current_user.to_json(), 'incident_id': incident.id})
-
-        return jsonify(incident_id=incident.id)
+        return jsonify(incident_id=3)
 
     @staticmethod
     def get_nearby_people():
