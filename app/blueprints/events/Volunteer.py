@@ -11,6 +11,7 @@ class VolunteerView(MethodView):
         data = json.loads(request.data)
         incident_id = data['incident_id']
         incident = Incident.query.filter_by(id=incident_id).first()
-        incident.helpers.append(current_user)
+        if current_user not in incident.helpers:
+            incident.helpers.append(current_user)
         db.session.commit()
         return jsonify(ok=True)
