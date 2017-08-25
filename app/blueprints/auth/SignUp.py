@@ -1,4 +1,6 @@
-from flask import jsonify, session
+import json
+
+from flask import jsonify, session, request
 from flask.ext.login import current_user, login_user
 from flask.views import MethodView
 
@@ -9,23 +11,23 @@ from app.auth.models import User
 
 class SignUpView(MethodView):
     def post(self):
-        form = SignUpForm()
-        user = User.query.filter_by(id_number=form.id_number.data).first()
+        data = json.loads(request.data)
+        user = User.query.filter_by(id_number=data['id_number']).first()
         if user is None:
             try:
-                user = User(allergies=form.allergies.data,
-                            id_number=form.id_number.data,
-                            blood_type=form.blood_type.data,
-                            username=form.fullname.data,
-                            uuid=form.uuid.data,
-                            can_help=form.can_help.data,
-                            can_help_medical=form.can_help_medical.data)
-                db.session.add(user)
-                db.session.commit()
+                user = User(allergies=data['allergies'],
+                            id_number=data['id_number'],
+                            blood_type=data['blood_type'],
+                            username=data['fullname'],
+                            uuid=change_id(data['uuid']),
+                            can_help_medical=data['can_help_medical']).save()
                 if login_user(user, remember=True):
                     session.permanent = True
             except Exception as e:
-                print e.message
-                return jsonify(ok=False, error='Error adding to DB')
+                return jsonify(ok=False, error='Error adding to DB'), 500
             return jsonify(ok=True)
-        return jsonify(ok=False, error='id number exists')
+        return jsonify(ok=False, error='id number exists'), 300
+
+
+def change_id(id):
+    return id.replace('<', '').replace('>', '').replace(' ', '')

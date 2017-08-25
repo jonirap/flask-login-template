@@ -51,10 +51,13 @@ class WorldGrid(object):
         tries.
         """
         i, j = self.people_locations[person['id']]
+        to_remove = None
         for resident in self.world[i][j]:
             if resident['id'] == person['id']:
-                self.world[i][j].remove(resident)
+                to_remove = resident
                 break
+        if to_remove is not None and to_remove in self.world[i][j]:
+            self.world[i][j].remove(to_remove)
         del self.people_locations[person['id']]
 
     def add_people(self, people):
@@ -67,7 +70,7 @@ class WorldGrid(object):
         longitude, latitude = self._degrees_to_numbers(cur_person['long'], cur_person['lat'])
         i, j = int(round(longitude * self.cubes)), int(round(latitude * self.cubes))
         ret = [person for add_i, add_j in self.RANGES for person in self.world[i + add_i][j + add_j]
-                if not person['id'] == cur_person['id']]
+               if not person['id'] == cur_person['id']]
         print ret
         return ret
 
