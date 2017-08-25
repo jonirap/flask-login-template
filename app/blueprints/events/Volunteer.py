@@ -11,5 +11,6 @@ class VolunteerView(MethodView):
         incident_id = data['incident_id']
         volunteer_id = data['id']
         incident = Incident.query.filter_by(id=incident_id).first()
-        incident.helpers.append(User.query.filter_by(volunteer_id).first())
+        incident.helpers.append(User.query.filter_by(id=volunteer_id).first())
         db.session.commit()
+        return jsonify(ok=True)
