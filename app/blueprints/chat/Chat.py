@@ -11,7 +11,7 @@ import datetime
 class ChatView(MethodView):
     def get(self):
         incident = Incident.query.filter_by(id=request.args.get('incident_id')).first()
-        return jsonify(incident=incident.to_json()['messages'])
+        return jsonify(messages=incident.to_json()['messages'])
 
     def post(self):
         try:
