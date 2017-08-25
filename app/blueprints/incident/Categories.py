@@ -18,6 +18,7 @@ class Category(object):
 
     @classmethod
     def matches(cls, keywords):
+        print 'BOTH ', cls.KEYWORDS, keywords
         return len(keywords.intersection(cls.KEYWORDS))
         # return sum(cls.KEYWORDS.get(word, 0) for word in cls.KEYWORDS.keys())
 
@@ -26,21 +27,24 @@ class Category(object):
         if isinstance(keywords, basestring):
             keywords = keywords.split()
         keywords = set(keywords)
+        print keywords
         matches = dict()
         for category in CATEGORIES_SET:
             matches[category.NAME] = category.matches(keywords)
         ordered_list = sorted(matches.keys(), key=lambda x: matches[x])
+        print 'matches ', matches
         if matches[ordered_list[0]] == matches[ordered_list[1]]:
             return 'Unknown'
         else:
             return ordered_list[0]
-        # return max(CATEGORIES_SET, key=lambda cat: cat.matches(keywords)).NAME
+            # return max(CATEGORIES_SET, key=lambda cat: cat.matches(keywords)).NAME
 
 
 class MedicalEmergency(Category):
     NAME = 'Medical'
     KEYWORDS = {'כואב', 'ראש', 'לב', 'בטן', 'הקיא', 'הקיאה', 'התעלף', 'התעלפה', 'משלשל', 'משלשלת', 'מתעלף', 'מקיא',
                 'מקיאה', 'מתעלפת', 'התקף', 'נפל', 'נפלה', 'אמבולנס'}
+
 
 class Fire(Category):
     NAME = 'Fire'
@@ -49,7 +53,7 @@ class Fire(Category):
 
 class Kidnapping(Category):
     NAME = 'Kidnapping'
-    KEYWORDS = {'חטיפה', 'חטפו', 'חטף', 'חטפה'}
+    KEYWORDS = {'חטיפה', 'חטפו', 'חטף', 'חטפה', 'חטוף'}
 
 
 class TerrorAttack(Category):
